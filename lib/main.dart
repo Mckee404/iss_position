@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'src/iss_now.dart';
 
 void main() {
   runApp(const MyApp());
@@ -60,22 +59,17 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             ElevatedButton(onPressed: (){
               callAPI();
-            }, child: Text("call API"))
+            }, child: const Text("call API"))
           ],
         ),
       ),
     );
   }
   void callAPI() async {
-    final response =
-        await http.get(Uri.parse("http://api.open-notify.org/iss-now.json"));
-    final body=response.body;
-    final jsonString=jsonDecode(body);
+    final iss_now=await getIssNow();
     setState(() {
-      _longitude=jsonString['iss_position']['longitude'];
-      _latitude=jsonString['iss_position']['latitude'];
+      _longitude=iss_now.iss_position?.longitude;
+      _latitude=iss_now.iss_position?.latitude;
     });
   }
 }
-
-
